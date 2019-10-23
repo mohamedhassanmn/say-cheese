@@ -90,7 +90,7 @@ export default function RecipeReviewCard() {
             <Icon className="far fa-smile-beam" color="primary" />
           </Badge>
           <Badge className={classes.margin} badgeContent={4} color="primary">
-            <Icon style={{marginLeft:"15px",width:"30px"}} className="far fa-comments" color="primary" />
+            <Icon style={{marginLeft:"15px",width:"30px"}} className="far fa-comment-alt" color="primary" />
           </Badge>        
         </div>
       </Card>                                                                                

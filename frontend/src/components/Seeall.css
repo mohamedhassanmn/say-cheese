@@ -1,0 +1,29 @@
+.navbarone {
+    width: 100%;
+    background-color:black;
+    overflow: auto;
+  }
+  
+  .navbarone a {
+    /* float: center; */
+    padding: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  .navbarone a:hover {
+    background-color: #000;
+  }
+  
+  .activve {
+    background-color: grey;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .navbarone a {
+      float: none;
+      display: block;
+    }
+  }
+  

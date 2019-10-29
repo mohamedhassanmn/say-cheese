@@ -1,0 +1,23 @@
+.image,.cont{
+  width:600px;
+  height:400px !important;
+  display:inline-block;
+  border:1px solid #000;
+  margin-right:30px;
+}
+.image{
+  display:flex !important;
+  justify-content: center;
+  border:1px solid red;
+  background-color: #535c68;
+  border-radius:5px;
+  align-items: center;
+}
+.upload-btn{
+  display:block;
+  margin-top:20px;
+}
+.dropdown{
+  color:white !important;
+  border-block-color: white !important;
+}

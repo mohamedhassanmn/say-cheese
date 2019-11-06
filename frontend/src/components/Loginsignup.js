@@ -73,6 +73,7 @@ class Loginsignup extends React.Component {
         })
         .catch(err=>alert(err))
     }
+
     handleRegister=()=>{
         let data={
             email:this.state.email,
@@ -106,14 +107,14 @@ class Loginsignup extends React.Component {
                     <div className="login-info-box">
                         <h2>Have an account?</h2>
                         <p>Lorem ipsum dolor sit amet</p>
-                        <label id="label-register" for="log-reg-show">Login</label>
+                        <label id="label-register" onClick={this.handleLoginSignup} for="log-reg-show">Login</label>
                         <input type="radio" name="active-log-panel" id="log-reg-show"  checked="checked"></input>
                     </div>
 
                     <div className="register-info-box">
                         <h2>Don't have an account?</h2>
                         <p>Lorem ipsum dolor sit amet</p>
-                        <label id="label-login" for="log-login-show">Register</label>
+                        <label id="label-login" onClick={this.handleLoginSignup} for="log-login-show">Register</label>
                         <input type="radio" name="active-log-panel" id="log-login-show" ></input>
                     </div>
 

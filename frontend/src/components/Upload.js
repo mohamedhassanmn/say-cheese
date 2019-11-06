@@ -9,6 +9,9 @@ import Button from '@material-ui/core/Button'
 import axios from 'axios'
 import "firebase/storage"
 import './upload.css'
+import Icon from '@material-ui/core/Icon';
+
+
 // import firebase from 'firebase'
 // var cities = require('cities');
 
@@ -114,7 +117,7 @@ export default class extends React.Component{
             <React.Fragment>
                 <Grid container justify="center" alignItems="center" style={{marginTop:"50px"}}>
                     {this.state.posted==false?
-                    <div>
+                    <>
                     <Grid item lg={6} md={12}>
                     {this.state.type=="image"?this.state.url!==""?<div >
                          <img className="image" src={this.state.url}/>
@@ -160,8 +163,9 @@ export default class extends React.Component{
                         <Button variant="contained" onClick={this.handleCancel} color="secondary" style={{color:"black"}}>Cancel</Button>
                     
                     </Grid>
-                    </div> :
-                    <div>
+                    </> :
+                    <div style={{marginBottom:"100vh"}}>
+                    <Icon style={{fontSize:"100px"}} className="far fa-check-circle"></Icon>
                     <h1 style={{color:"white"}}>Successfully Posted !</h1>
                     </div>}
                 </Grid>

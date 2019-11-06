@@ -145,8 +145,19 @@ def saved(token_id):
 @app.route("/user-like/<string:token_id>/<ObjectId:post_id>")
 def liked(token_id,post_id):
     decoded=jwt.decode(token_id,"secret",algorithm="HS256")
-    status=mongo.db.posts.update({"_id":post_Id},{"$push":{"happy":decoded["username"]}})
-    return dumps({"res":status})
+    finds=mongo.db.posts.find({"_id":post_id})
+    flag=False
+    # return dumps({"res":finds[0]['happy']})
+    if len(finds[0]["happy"])!=0:
+        for x in range(len(finds[0]["happy"])):
+            if x != decoded["username"]:
+                flag=True
+                status=mongo.db.posts.update({"_id":post_id},{"$push":{"happy":decoded["username"]}})
+                return dumps({"res":status})
+    if flag:
+        errors={error:"true",status:"user have already made it"}
+        return dumps({"res":errors})
+    
 @app.route("/user-comment/<string:token_id>/<ObjectId:post_id>",methods=["POST"])
 def comment(token_id,post_id):
     decoded=jwt.decode(token_id,"secret",algorithm="HS256")

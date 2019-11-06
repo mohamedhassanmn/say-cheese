@@ -86,15 +86,6 @@ class Homepage extends Component {
         <h1 className="head1">
           TRENDING
         </h1>
-        <Link to="/seeall">
-          <a
-            className="head2 p-4 see-all"
-            href=""
-          >
-            See All
-          </a>
-        </Link>
-
           {this.state.trending!==""? <Slider>
           {this.state.trending.map(movie => (
             <Slider.Item movie={movie} key={movie.id}>

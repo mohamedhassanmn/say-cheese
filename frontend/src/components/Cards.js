@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -17,6 +17,7 @@ import styles from './Cards.module.css'
 import { textAlign } from '@material-ui/system';
 import {Redirect} from 'react-router-dom'
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +31,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 280,
     width:350,
     borderRadius:15,
-    backgroundImage:"linear-gradient(rgba(0,0,0,0),rgba(0, 0, 0,0.4) 99%),url(https://firebasestorage.googleapis.com/v0/b/fir-bbaa1.appspot.com/o/images%2F1.jpeg?alt=media&token=0287cc0c-8a6c-429e-ac29-b5027e12827a)",
     backgroundSize:"cover",
     backgroundPosition:"center",
     height:450,
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
   hashTag:{
     height: 30,
-    paddingTop: '100.25%', // 16:9
+    paddingTop: '80.25%', // 16:9
     paddingBottom:0,
     paddingLeft:0,
     fontFamily: 'Pacifico',
@@ -60,7 +60,8 @@ const useStyles = makeStyles(theme => ({
   title:{
       fontFamily:'Fira Sans, sans-serif',
       fontSize:30,
-      textAlign:"center"
+      textAlign:"center",
+      marginBottom:"25px"
   },
   icon:{
     textAlign:"right",
@@ -69,37 +70,74 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Cards() {
+
+export default function Cards(props) {
+  const [friends, setFriends] = useState("");
+  const [happy, setHappy]=useState(false)
+  useEffect((prevProps,prevState) => {
+    if(friends===""||happy){
+      console.log("haren")
+    axios({method:"get",url:"http://127.0.0.1:5000/user-recent"})
+    .then(res=>{
+      console.log(res.data.status)
+      setFriends(res.data.status)
+      setHappy(false)
+    })
+
+    .catch(err=>alert(err))}
+  });
+  function handleHappy(e){
+    let username= e.target.id
+    console.log(e.target.id)
+    console.log(username,"username")
+    let currentuser=localStorage.getItem("token")
+    axios({method:"get",url:`http://127.0.0.1:5000/user-like/${currentuser}/${username}`})
+    .then(res=>{
+      console.log(res.data.res)
+      // setHappy(true)
+    })
+    .catch(err=>alert(err))
+  }
+  console.log("hi")
   const classes = useStyles();
-  console.log(localStorage.getItem("token"),"hello madam")
   return (
     <div className={classes.container}>
-      <Card className={classes.card}>
-        <CardContent className={classes.hashTag}>
-          <Typography variant="body" component="p">
-            # BeingProfessional
-          </Typography>
-        </CardContent>
-        <CardContent className={classes.title} >
-          <Typography variant="body" component="p">
-            First day being    
-          </Typography>
-        </CardContent>
-     <Link to="/loginsignup"><CardHeader className={classes.user}
-          avatar={
-              <Avatar alt="Remy Sharp" src="https://firebasestorage.googleapis.com/v0/b/fir-bbaa1.appspot.com/o/images%2F2.jpeg?alt=media&token=0d6ef322-a75c-43ac-867d-1703e8ad2302" className={classes.avatar} />
-          }
-          title="Nrupul"
-        /></Link>
-        <div className={classes.icon}>
-          <Badge className={classes.margin} badgeContent={4} color="primary">
-          <Link to="/loginsignup"> <Icon className="fa fa-smile" /></Link>
-          </Badge>&nbsp; &nbsp;&nbsp;
-          <Badge className={classes.margin} badgeContent={4} color="primary">
-          {localStorage.getItem("token")==null?<Redirect to="/loginsignup"/>:<Link to="/loveyou"><Icon style={{marginLeft:"15px",width:"30px"}} className="fa fa-comments"/></Link>}
-          </Badge>        
-        </div>
-      </Card>                                                                                
+      {friends!==""?<React.Fragment>
+      {
+        friends.map((ele)=>{
+          return(
+            <Card className={classes.card} style={{backgroundImage:`linear-gradient(rgba(0,0,0,0),rgba(0, 0, 0,0.4) 99%),url(${ele.media_link})`}} key={ele._id.$oid}>
+            <CardContent className={classes.hashTag}>
+            <Typography variant="body" component="p">
+              {ele.hash_tag}
+            </Typography>
+          </CardContent>
+          <CardContent className={classes.title} >
+            <Typography variant="body" component="p">
+              {ele.title}   
+            </Typography>
+          </CardContent>
+       <Link to="/loginsignup"><CardHeader className={classes.user}
+            avatar={
+              <Avatar className={classes.avatar}>{ele.posted_by[0]}</Avatar>
+            }
+            title={ele.posted_by}
+          /></Link>
+          {/* <div className={classes.icon}> */}
+            <Badge id={ele._id.$oid} onClick={handleHappy} className={classes.margin} badgeContent={ele.happy.length} color="primary">
+            {/* <Link to="/loginsignup"> <Icon className="fa fa-smile" /></Link> */}
+            {localStorage.getItem("token")==null?<Redirect to="/loginsignup"/>:<p id={ele._id.$oid}>happy</p> }
+            </Badge>&nbsp; &nbsp;&nbsp;
+            <Badge id={ele.posted_by} className={classes.margin} badgeContent={ele.comments.length} color="primary">
+            {localStorage.getItem("token")==null?<Redirect to="/loginsignup"/>:<Icon style={{marginLeft:"15px",width:"30px"}} className="fa fa-comments"/>}
+            </Badge>        
+          {/* </div> */}
+          </Card>
+          )
+        })
+        }
+      </React.Fragment>:null}                                                                                
     </div>
   );
 }
+ 

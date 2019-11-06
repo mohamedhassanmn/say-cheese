@@ -1,3 +1,4 @@
-# An example of the Netflix slider
+# Say Cheese 
+## this app is to Spread the happy news around you
 
-![preview](netflix-slider.png)
+
